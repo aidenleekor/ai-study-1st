@@ -687,10 +687,45 @@ html, body {
 
 /* SVG Google Logo */
 .ig-logo-svg { width:100%; height:100%; }
+
+/* ─── 모바일 세로모드 안내 ─── */
+.rotate-hint {
+  display: none;
+}
+@media (max-width: 720px) and (orientation: portrait) {
+  .rotate-hint {
+    display: flex;
+    position: fixed;
+    top: 64px;
+    left: 50%;
+    transform: translateX(-50%);
+    align-items: center;
+    gap: 8px;
+    background: rgba(255,255,255,.95);
+    color: #181715;
+    font-family: 'Noto Sans KR', -apple-system, sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    padding: 9px 18px;
+    border-radius: 999px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.35);
+    z-index: 9998;
+    white-space: nowrap;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+  }
+  .rotate-hint .icon { font-size: 15px; }
+  /* 좁은 화면에서 컨트롤이 잘리지 않도록 stage gap 축소 */
+  #stage { gap: 0; padding: 0 8px; }
+  #nav { gap: 10px; margin-top: 14px; }
+  .nbtn { padding: 9px 22px; font-size: 14px; }
+  .khint { display: none; }
+}
 </style>
 </head>
 <body>
 <a href="../" class="back-to-main">← 메인으로</a>
+<div class="rotate-hint"><span class="icon">↻</span> 가로 모드로 돌리면 더 잘 보입니다</div>
 
 <div id="stage">
   <div id="wrap">
