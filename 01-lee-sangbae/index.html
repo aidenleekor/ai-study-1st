@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>표기 준칙·AI 가이드라인 챗봇 2종 · AI 스터디 1기</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.css">
+<style>
+  :root {
+    --canvas: #faf9f5;
+    --cream-card: #f5f3eb;
+    --dark-surface: #181715;
+    --ink: #141413;
+    --ink-muted: #6b6a66;
+    --ink-on-dark: #faf9f5;
+    --coral: #cc785c;
+    --coral-soft: #e8a890;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 400;
+    min-height: 100vh;
+  }
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 20px;
+    border-bottom: 1px solid rgba(20,20,19,.08);
+    background: var(--canvas);
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: all .15s;
+  }
+  .back-link:hover { background: var(--cream-card); color: var(--coral); }
+  .session-info {
+    font-size: 13px;
+    color: var(--ink-muted);
+    text-align: right;
+    line-height: 1.4;
+  }
+  .session-info strong {
+    color: var(--ink);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+  @media (max-width: 500px) {
+    .session-info .title-text { display: none; }
+  }
+
+  /* 슬라이드 영역 */
+  .stage {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 20px;
+    min-height: calc(100vh - 60px);
+    gap: 16px;
+  }
+  .slide-frame {
+    width: 100%;
+    max-width: 1100px;
+    aspect-ratio: 16 / 9;
+    background: var(--ink);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(20,20,19,.12);
+    position: relative;
+    user-select: none;
+  }
+  .slide-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    pointer-events: none;
+  }
+
+  /* 좌우 화살표 */
+  .nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(20,20,19,.5);
+    color: white;
+    border: none;
+    width: 44px;
+    height: 64px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 24px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all .15s;
+    backdrop-filter: blur(4px);
+  }
+  .nav-btn:hover:not(:disabled) { background: var(--coral); }
+  .nav-btn:disabled { opacity: 0; pointer-events: none; }
+  .nav-btn.prev { left: 12px; }
+  .nav-btn.next { right: 12px; }
+
+  /* 하단 컨트롤 */
+  .controls {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: var(--ink-muted);
+    font-size: 14px;
+  }
+  .counter {
+    font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    color: var(--ink);
+    min-width: 56px;
+    text-align: center;
+  }
+  .counter .total { color: var(--ink-muted); font-weight: 400; }
+
+  /* 모바일 */
+  @media (max-width: 640px) {
+    .stage {
+      padding: 16px 12px;
+      min-height: auto;
+      justify-content: flex-start;
+    }
+    .nav-btn { width: 36px; height: 52px; font-size: 20px; }
+    .nav-btn.prev { left: 8px; }
+    .nav-btn.next { right: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <a href="../" class="back-link">← 메인으로</a>
+  <div class="session-info">
+    <strong>Session 01</strong> <span class="title-text">· 표기 준칙·AI 가이드라인 챗봇 2종</span><br>
+    <span>이상배</span>
+  </div>
+</div>
+
+<div class="stage">
+  <div class="slide-frame" id="frame">
+    <img id="slide" src="slides/slide-01.jpg" alt="slide 1">
+    <button class="nav-btn prev" id="prev" aria-label="이전">‹</button>
+    <button class="nav-btn next" id="next" aria-label="다음">›</button>
+  </div>
+  <div class="controls">
+    <button class="nav-btn" style="position:static;transform:none;width:auto;height:auto;padding:6px 14px;background:var(--cream-card);color:var(--ink);font-size:14px;font-weight:600;border-radius:8px;" id="prev-bottom">이전</button>
+    <div class="counter"><span id="cur">1</span><span class="total"> / 29</span></div>
+    <button class="nav-btn" style="position:static;transform:none;width:auto;height:auto;padding:6px 14px;background:var(--cream-card);color:var(--ink);font-size:14px;font-weight:600;border-radius:8px;" id="next-bottom">다음</button>
+  </div>
+</div>
+
+<script>
+  const TOTAL = 29;
+  let cur = 1;
+
+  const img = document.getElementById('slide');
+  const curEl = document.getElementById('cur');
+  const prev = document.getElementById('prev');
+  const next = document.getElementById('next');
+  const prevB = document.getElementById('prev-bottom');
+  const nextB = document.getElementById('next-bottom');
+
+  function pad(n){ return String(n).padStart(2, '0'); }
+
+  function render(){
+    img.src = 'slides/slide-' + pad(cur) + '.jpg';
+    img.alt = 'slide ' + cur;
+    curEl.textContent = cur;
+    prev.disabled = cur === 1;
+    next.disabled = cur === TOTAL;
+    prevB.disabled = cur === 1;
+    nextB.disabled = cur === TOTAL;
+    prevB.style.opacity = cur === 1 ? '.4' : '1';
+    nextB.style.opacity = cur === TOTAL ? '.4' : '1';
+  }
+
+  function go(delta){
+    const newCur = cur + delta;
+    if (newCur < 1 || newCur > TOTAL) return;
+    cur = newCur;
+    render();
+  }
+
+  prev.addEventListener('click', () => go(-1));
+  next.addEventListener('click', () => go(1));
+  prevB.addEventListener('click', () => go(-1));
+  nextB.addEventListener('click', () => go(1));
+
+  // 키보드
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowLeft') go(-1);
+    if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); go(1); }
+    if (e.key === 'Home') { cur = 1; render(); }
+    if (e.key === 'End') { cur = TOTAL; render(); }
+  });
+
+  // 터치 스와이프
+  let touchStartX = null;
+  const frame = document.getElementById('frame');
+  frame.addEventListener('touchstart', (e) => { touchStartX = e.touches[0].clientX; }, {passive: true});
+  frame.addEventListener('touchend', (e) => {
+    if (touchStartX === null) return;
+    const dx = e.changedTouches[0].clientX - touchStartX;
+    if (Math.abs(dx) > 50) go(dx > 0 ? -1 : 1);
+    touchStartX = null;
+  });
+
+  // 클릭 영역 (좌우 절반)
+  img.addEventListener('click', (e) => {
+    const rect = frame.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    if (x < rect.width / 2) go(-1); else go(1);
+  });
+
+  render();
+</script>
+
+</body>
+</html>
